@@ -9,9 +9,10 @@ export class MinioService {
   constructor(private configService:ConfigService) {
     this.client = new Client({
       endPoint: configService.get('MINIO_ENDPOINT'),
-      port: configService.get('MINIO_PORT'),
+      port: parseInt(configService.get('MINIO_PORT')),
       accessKey: configService.get('MINIO_ACCESS_KEY'),
       secretKey: configService.get('MINIO_SECRET_KEY'),
+      useSSL: false,
     });
   }
 

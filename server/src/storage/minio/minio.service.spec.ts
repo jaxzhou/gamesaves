@@ -7,7 +7,11 @@ describe('MinioService', () => {
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
-      imports: [ConfigModule],
+      imports: [
+        ConfigModule.forRoot({
+          envFilePath: ['.test.env'],
+        }),
+      ],
       providers: [MinioService],
     }).compile();
 
