@@ -9,6 +9,7 @@ export class User {
     nullable: false,
     type: 'varchar',
     length: 20,
+    unique: true,
   })
   username: string;
 
@@ -16,6 +17,7 @@ export class User {
     nullable: false,
     type: 'varchar',
     length: 20,
+    unique: true,
   })
   phone: string;
 
