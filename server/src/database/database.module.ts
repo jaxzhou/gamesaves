@@ -1,25 +1,25 @@
 import { Module } from '@nestjs/common';
 import { MikroOrmModule } from '@mikro-orm/nestjs';
-import { ConfigService } from '@nestjs/config';
-import { User } from './entities/user.entity';
 import { FlushMode } from '@mikro-orm/core';
+import { ConfigModule, ConfigService } from '@nestjs/config';
 
 @Module({
   imports: [
     MikroOrmModule.forRootAsync({
+      imports: [ConfigModule],
       inject: [ConfigService],
-      useFactory: (config: ConfigService) => ({
+      useFactory: (config:ConfigService) => ({
         type: 'postgresql',
-        dbName: config.get('DATABASE_DBNAME'),
-        host: config.get('DATABASE_HOST'),
-        port: config.get('DATABASE_PORT'),
-        user: config.get('DATABASE_USER'),
-        password: config.get('DATABASE_PASSWORD'),
+        dbName: config.get('DATABASE_NAME') || 'saves',
+        host: config.get('DATABASE_HOST') || 'localhost',
+        port: parseInt(config.get('DATABASE_PORT') || '5432'),
+        user: config.get('DATABASE_USER') || 'postgres',
+        password: config.get('DATABASE_PASSWORD') || 'postgres',
         entities: ['dist/database/entities/*.entity.js'],
         entitiesTs: ['src/database/entities/*.entity.ts'],
         ensureDatabase: true,
         debug: process.env.ENV != 'production',
-        autoLoadEntities: false,
+        autoLoadEntities: true,
         allowGlobalContext: true,
         flushMode: FlushMode.AUTO,
       }),

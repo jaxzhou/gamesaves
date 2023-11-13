@@ -6,9 +6,11 @@ import { MikroOrmModule } from '@mikro-orm/nestjs';
 import { User } from '../database/entities/user.entity';
 import { AuthService } from './auth/auth.service';
 import { JwtModule } from '@nestjs/jwt';
+import { ConfigModule } from '@nestjs/config';
 
 @Module({
   imports: [
+    ConfigModule,
     MikroOrmModule.forFeature([
       User,
     ]),

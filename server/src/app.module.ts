@@ -9,7 +9,10 @@ import { MikroOrmModule } from '@mikro-orm/nestjs';
 
 @Module({
   imports: [
-    ConfigModule.forRoot(),
+    ConfigModule.forRoot({
+      envFilePath: [`.${process.env.ENV}.env`, '.env'],
+      isGlobal: true,
+    }),
     DatabaseModule,
     UserModule,
     StorageModule],

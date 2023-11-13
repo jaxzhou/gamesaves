@@ -6,12 +6,12 @@ import { Readable } from 'stream';
 @Injectable()
 export class MinioService {
   private client: Client;
-  constructor(private configService:ConfigService) {
+  constructor(private readonly configService: ConfigService) {
     this.client = new Client({
-      endPoint: configService.get('MINIO_ENDPOINT'),
-      port: parseInt(configService.get('MINIO_PORT')),
-      accessKey: configService.get('MINIO_ACCESS_KEY'),
-      secretKey: configService.get('MINIO_SECRET_KEY'),
+      endPoint: configService.get('MINIO_HOST') || 'localhost',
+      port: parseInt(configService.get('MINIO_PORT') || '9000'),
+      accessKey: configService.get('MINIO_ACCESS_KEY') || 'minio',
+      secretKey: configService.get('MINIO_SECRET_KEY') || 'minio123',
       useSSL: false,
     });
   }
