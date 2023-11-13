@@ -5,6 +5,8 @@ import { ConfigModule } from '@nestjs/config';
 import { DatabaseModule } from '../../database/database.module';
 import { MikroOrmModule } from '@mikro-orm/nestjs';
 import { User } from '../../database/entities/user.entity';
+import { AuthService } from './auth.service';
+import { JwtModule } from '@nestjs/jwt';
 
 describe('AuthController', () => {
   let controller: AuthController;
@@ -21,9 +23,14 @@ describe('AuthController', () => {
         MikroOrmModule.forFeature([
           User
         ]),
+        JwtModule.register({
+          global: true,
+          secret: process.env.JWT_SECRET,
+          signOptions: { expiresIn: '1d' },
+        }),
       ],
       controllers: [AuthController],
-      providers: [UserService],
+      providers: [UserService, AuthService],
     }).compile();
 
     controller = module.get<AuthController>(AuthController);
@@ -36,7 +43,7 @@ describe('AuthController', () => {
   
   it('register', async () => {
     const createUserFunc = jest.spyOn(service, 'create');
-    await controller.register({
+    const user = await controller.register({
       username: 'test',
       phone: '123456789',
       password: '123456',
@@ -47,6 +54,7 @@ describe('AuthController', () => {
       phone: '123456789',
       password: 'ea48576f30be1669971699c09ad05c94',
     });
+    expect(user).toHaveProperty('access_token');
   });
   
   it('login', async () => {
@@ -55,7 +63,7 @@ describe('AuthController', () => {
       username: 'test',
       password: '123456',
     });
-    expect(findFunc).toHaveBeenCalledWith(test);
-    expect(user).toHaveProperty('username', 'test');
+    expect(findFunc).toHaveBeenCalledWith('test');
+    expect(user).toHaveProperty('access_token');
   });
 });

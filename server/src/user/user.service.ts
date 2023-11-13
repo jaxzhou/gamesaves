@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
-import { EntityRepository } from '@mikro-orm/postgresql';
+import { EntityManager, EntityRepository } from '@mikro-orm/postgresql';
 import { wrap } from '@mikro-orm/core';
 import * as crypto from 'crypto';
 
@@ -11,20 +11,14 @@ import { InjectRepository } from '@mikro-orm/nestjs';
 @Injectable()
 export class UserService {
 
-  constructor(@InjectRepository(User) private readonly userRepo: EntityRepository<User>) {
+  constructor(@InjectRepository(User) private readonly userRepo: EntityRepository<User>, private readonly em: EntityManager) {
   }
 
   async create(createUserDto: CreateUserDto) {
     //create user
     const createdUser = this.userRepo.create(createUserDto);
+    this.em.flush();
     return createdUser;
-  }
-
-
-  async hashPassword(password: string) {
-    const salt = '123456';
-    const hash = crypto.createHash('md5').update(password + salt).digest('hex');
-    return hash;
   }
 
   async findAll() {
@@ -42,6 +36,7 @@ export class UserService {
   async update(id: number, updateUserDto: UpdateUserDto) {
     const user = await this.userRepo.findOne(id);
     wrap(user).assign(updateUserDto);
+    this.em.flush();
     return user;
   }
 
