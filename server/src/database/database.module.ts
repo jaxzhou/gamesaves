@@ -2,6 +2,7 @@ import { Module } from '@nestjs/common';
 import { MikroOrmModule } from '@mikro-orm/nestjs';
 import { ConfigService } from '@nestjs/config';
 import { User } from './entities/user.entity';
+import { FlushMode } from '@mikro-orm/core';
 
 @Module({
   imports: [
@@ -18,13 +19,13 @@ import { User } from './entities/user.entity';
         entitiesTs: ['src/database/entities/*.entity.ts'],
         ensureDatabase: true,
         debug: process.env.ENV != 'production',
-        autoLoadEntities: true,
+        autoLoadEntities: false,
+        allowGlobalContext: true,
+        flushMode: FlushMode.AUTO,
       }),
     }),
-    MikroOrmModule.forFeature([
-      User,
-    ])
   ],
+  providers: [],
   exports: [],
 })
 export class DatabaseModule {}

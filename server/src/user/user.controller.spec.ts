@@ -3,6 +3,8 @@ import { ConfigModule } from '@nestjs/config';
 import { UserController } from './user.controller';
 import { UserService } from './user.service';
 import { DatabaseModule } from '../database/database.module';
+import { MikroOrmModule } from '@mikro-orm/nestjs';
+import { User } from '../database/entities/user.entity';
 
 describe('UserController', () => {
   let controller: UserController;
@@ -15,6 +17,9 @@ describe('UserController', () => {
           isGlobal: true,
         }),
         DatabaseModule,
+        MikroOrmModule.forFeature([
+          User,
+        ])
       ],
       controllers: [UserController],
       providers: [UserService],
