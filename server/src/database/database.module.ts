@@ -19,7 +19,7 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
         entitiesTs: ['src/database/entities/*.entity.ts'],
         ensureDatabase: true,
         debug: process.env.ENV != 'production',
-        autoLoadEntities: true,
+        autoLoadEntities: false,
         allowGlobalContext: true,
         flushMode: FlushMode.AUTO,
       }),

@@ -12,7 +12,7 @@ describe('AuthController', () => {
   let controller: AuthController;
   let service: UserService;
 
-  beforeEach(async () => {
+  beforeAll(async () => {
     const module: TestingModule = await Test.createTestingModule({
       imports: [
         ConfigModule.forRoot({

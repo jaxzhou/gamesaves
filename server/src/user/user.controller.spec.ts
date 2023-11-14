@@ -10,7 +10,7 @@ import { JwtModule } from '@nestjs/jwt';
 describe('UserController', () => {
   let controller: UserController;
 
-  beforeEach(async () => {
+  beforeAll(async () => {
     const module: TestingModule = await Test.createTestingModule({
       imports: [
         ConfigModule.forRoot({

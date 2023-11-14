@@ -16,7 +16,7 @@ describe('AppController', () => {
 
   describe('root', () => {
     it('should return Version Info', () => {
-      expect(appController.getHello()).toBe('GameSaves 0.0.1');
+      expect(appController.getVersion()).toBe('GameSaves 0.0.1');
     });
   });
 });
