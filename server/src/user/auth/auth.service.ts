@@ -5,13 +5,14 @@ import { UserService } from '../user.service';
 import { LoginUserDto } from '../dto/login-user.dtp';
 import { User } from '../../database/entities/user.entity';
 import { RegisteUserDto } from '../dto/registe-user.dto';
+import { UserInfoDto } from '../dto/user-info.dto';
 
 @Injectable()
 export class AuthService {
   constructor(private readonly jwtService: JwtService, private readonly userService: UserService) {
   }
 
-  async validateUser(user: LoginUserDto): Promise<Omit<User, 'password'>> {
+  async validateUser(user: LoginUserDto): Promise<UserInfoDto> {
     const userEntiry = await this.userService.findByName(user.username);
     const hashPassword = await this.hashPassword(user.password);
     if (userEntiry && userEntiry.password === hashPassword) {
