@@ -1,5 +1,7 @@
+import { logger } from '@mikro-orm/nestjs';
 import { CanActivate, ExecutionContext, Injectable, UnauthorizedException } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
+import { log } from 'console';
 import { Observable } from 'rxjs';
 
 @Injectable()
@@ -14,6 +16,7 @@ export class AuthGuard implements CanActivate {
     const request = context.switchToHttp().getRequest();
     const authHeader = request.headers.authorization;
     if (!authHeader) {
+      logger.warn('No token');
       throw new UnauthorizedException();
     }
     const token = authHeader.split(" ")[1];
@@ -21,6 +24,7 @@ export class AuthGuard implements CanActivate {
       secret: process.env.JWT_SECRET,
     });
     if (!user) {
+      logger.warn("Invalid token");
       throw new UnauthorizedException();
     }
     request.user = user;

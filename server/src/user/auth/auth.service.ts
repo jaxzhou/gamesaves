@@ -34,7 +34,7 @@ export class AuthService {
       throw new Error("用户名或密码错误");
     }
     return {
-      access_token: this.jwtService.sign(payload),
+      access_token: this.jwtService.sign(payload, {secret: process.env.JWT_SECRET}),
     };
   }
 
@@ -46,7 +46,7 @@ export class AuthService {
     });
     const { password, ...result } = userEntity;
     return {
-      access_token: this.jwtService.sign(result),
+      access_token: this.jwtService.sign(result, {secret: process.env.JWT_SECRET}),
     };
   }
 }

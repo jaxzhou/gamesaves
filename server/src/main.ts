@@ -8,7 +8,14 @@ async function bootstrap() {
   const app = await NestFactory.create(AppModule);
   const config = new DocumentBuilder()
     .setTitle("GameSaves")
-    .addBasicAuth()
+    .addBearerAuth()
+    .addSecurity('bearer', {
+      type: 'apiKey',
+      in: 'header',
+      name: 'Authorization',
+      scheme: 'bearer',
+    })
+    .addSecurityRequirements('bearer')
     .build();
   const document = SwaggerModule.createDocument(app, config);
   SwaggerModule.setup('api', app, document);
