@@ -3,11 +3,15 @@ import { CanActivate, ExecutionContext, Injectable, UnauthorizedException } from
 import { JwtService } from '@nestjs/jwt';
 import { log } from 'console';
 import { Observable } from 'rxjs';
+import { UserService } from '../user.service';
 
 @Injectable()
 export class AuthGuard implements CanActivate {
 
-  constructor(private readonly jwtService: JwtService) {}
+  constructor(
+    private readonly jwtService: JwtService,
+    private readonly userService: UserService
+  ) {}
 
   canActivate(
     context: ExecutionContext,
@@ -27,7 +31,10 @@ export class AuthGuard implements CanActivate {
       logger.warn("Invalid token");
       throw new UnauthorizedException();
     }
-    request.user = user;
-    return true;
+    return (async () => {
+      const userEntity = await this.userService.findOne(user.id);
+      request.user = userEntity;
+      return true;
+    })();
   }
 }

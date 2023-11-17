@@ -8,8 +8,11 @@ import { MikroOrmModule } from '@mikro-orm/nestjs';
 import { Save } from '../database/entities/save.entity';
 import { Game } from '../database/entities/game.entity';
 import { async } from 'rxjs';
+import { UserService } from '../user/user.service';
+import { GameService } from './game/game.service';
+import { User } from '../database/entities/user.entity';
 
-describe('StorageController', () => {
+describe('SaveController', () => {
   let controller: SavesController;
   let module: TestingModule;
 
@@ -24,10 +27,12 @@ describe('StorageController', () => {
         MikroOrmModule.forFeature([
           Save,
           Game,
+          User,
         ]),
         UserModule,
       ],
       controllers: [SavesController],
+      providers: [UserService, AuthService, GameService],
     }).compile();
 
     controller = module.get<SavesController>(SavesController);

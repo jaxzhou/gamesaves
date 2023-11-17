@@ -3,8 +3,8 @@ import { UserService } from './user.service';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { AuthGuard } from './auth/auth.guard';
 import { ApiTags } from '@nestjs/swagger';
-import { User } from './user.decorator';
-import { UserInfoDto } from './dto/user-info.dto';
+import { AuthUser } from './user.decorator';
+import { User } from '../database/entities/user.entity';
 
 @Controller('user')
 @UseGuards(AuthGuard)
@@ -13,7 +13,7 @@ export class UserController {
   constructor(private readonly userService: UserService) {}
 
   @Get()
-  findAuthUser(@User() user: UserInfoDto) {
+  findAuthUser(@AuthUser() user: User) {
     return this.userService.findOne(user.id);
   }
 
