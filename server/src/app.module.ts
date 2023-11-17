@@ -4,13 +4,13 @@ import { AppService } from './app.service';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { DatabaseModule } from './database/database.module';
 import { UserModule } from './user/user.module';
-import { StorageModule } from './storage/storage.module';
+import { StorageModule } from './saves/storage.module';
 import { MikroOrmModule } from '@mikro-orm/nestjs';
 
 @Module({
   imports: [
     ConfigModule.forRoot({
-      envFilePath: [`.${process.env.ENV}.env`, '.env'],
+      envFilePath: [ '.env', `.${process.env.NODE_ENV}.env`, `.${process.env.ENV}.env` ],
       isGlobal: true,
     }),
     DatabaseModule,

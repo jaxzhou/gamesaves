@@ -7,9 +7,10 @@ import { User } from '../database/entities/user.entity';
 
 describe('UserService', () => {
   let service: UserService;
+  let module: TestingModule;
 
   beforeAll(async () => {
-    const module: TestingModule = await Test.createTestingModule({
+    module = await Test.createTestingModule({
       imports: [
         ConfigModule.forRoot({
           envFilePath: ['.test.env'],
@@ -24,6 +25,10 @@ describe('UserService', () => {
     }).compile();
 
     service = module.get<UserService>(UserService);
+  });
+
+  afterAll(async () => {
+    await module.close();
   });
 
   it('should be defined', () => {

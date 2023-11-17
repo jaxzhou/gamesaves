@@ -1,14 +1,13 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { AuthService } from './auth.service';
-import { UserService } from '../user.service';
-import { JwtModule } from '@nestjs/jwt';
+import { GameService } from './game.service';
 import { ConfigModule } from '@nestjs/config';
 import { DatabaseModule } from '../../database/database.module';
 import { MikroOrmModule } from '@mikro-orm/nestjs';
-import { User } from '../../database/entities/user.entity';
+import { Save } from '../../database/entities/save.entity';
+import { Game } from '../../database/entities/game.entity';
 
-describe('AuthService', () => {
-  let service: AuthService;
+describe('GameService', () => {
+  let service: GameService;
   let module: TestingModule;
 
   beforeAll(async () => {
@@ -20,18 +19,14 @@ describe('AuthService', () => {
         }),
         DatabaseModule,
         MikroOrmModule.forFeature([
-          User
+          Save,
+          Game,
         ]),
-        JwtModule.register({
-          global: true,
-          secret: process.env.JWT_SECRET,
-          signOptions: { expiresIn: '1d' },
-        }),
       ],
-      providers: [UserService, AuthService],
+      providers: [GameService],
     }).compile();
 
-    service = module.get<AuthService>(AuthService);
+    service = module.get<GameService>(GameService);
   });
 
   afterAll(async () => {
@@ -40,5 +35,11 @@ describe('AuthService', () => {
 
   it('should be defined', () => {
     expect(service).toBeDefined();
+  });
+
+  it('createGame should return a game', async () => {
+    const game = await service.createGame({name: 'test'});
+    expect(game).toBeDefined();
+    expect(game.name).toBe('test');
   });
 });

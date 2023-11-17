@@ -11,9 +11,10 @@ import { JwtModule } from '@nestjs/jwt';
 describe('AuthController', () => {
   let controller: AuthController;
   let service: UserService;
+  let module: TestingModule;
 
   beforeAll(async () => {
-    const module: TestingModule = await Test.createTestingModule({
+    module = await Test.createTestingModule({
       imports: [
         ConfigModule.forRoot({
           envFilePath: ['.test.env'],
@@ -35,6 +36,10 @@ describe('AuthController', () => {
 
     controller = module.get<AuthController>(AuthController);
     service = module.get<UserService>(UserService);
+  });
+
+  afterAll(async () => {
+    await module.close();
   });
 
   it('should be defined', () => {

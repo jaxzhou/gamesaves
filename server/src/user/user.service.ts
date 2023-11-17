@@ -3,7 +3,6 @@ import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { EntityManager, EntityRepository } from '@mikro-orm/postgresql';
 import { wrap } from '@mikro-orm/core';
-import * as crypto from 'crypto';
 
 import { User } from '../database/entities/user.entity';
 import { InjectRepository } from '@mikro-orm/nestjs';

@@ -4,14 +4,19 @@ import { AppService } from './app.service';
 
 describe('AppController', () => {
   let appController: AppController;
+  let module: TestingModule;
 
-  beforeEach(async () => {
-    const app: TestingModule = await Test.createTestingModule({
+  beforeAll(async () => {
+    module = await Test.createTestingModule({
       controllers: [AppController],
       providers: [AppService],
     }).compile();
 
-    appController = app.get<AppController>(AppController);
+    appController = module.get<AppController>(AppController);
+  });
+
+  afterAll(async () => {
+    await module.close();
   });
 
   describe('root', () => {

@@ -1,14 +1,16 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { ConfigModule } from '@nestjs/config';
-import { UserController } from './user.controller';
-import { UserService } from './user.service';
+import { SavesController } from './saves.controller';
+import { AuthService } from '../user/auth/auth.service';
+import { UserModule } from '../user/user.module';
 import { DatabaseModule } from '../database/database.module';
+import { ConfigModule } from '@nestjs/config';
 import { MikroOrmModule } from '@mikro-orm/nestjs';
-import { User } from '../database/entities/user.entity';
-import { JwtModule } from '@nestjs/jwt';
+import { Save } from '../database/entities/save.entity';
+import { Game } from '../database/entities/game.entity';
+import { async } from 'rxjs';
 
-describe('UserController', () => {
-  let controller: UserController;
+describe('StorageController', () => {
+  let controller: SavesController;
   let module: TestingModule;
 
   beforeAll(async () => {
@@ -20,19 +22,15 @@ describe('UserController', () => {
         }),
         DatabaseModule,
         MikroOrmModule.forFeature([
-          User,
+          Save,
+          Game,
         ]),
-        JwtModule.register({
-          global: true,
-          secret: process.env.JWT_SECRET,
-          signOptions: { expiresIn: '1d' },
-        }),
+        UserModule,
       ],
-      controllers: [UserController],
-      providers: [UserService],
+      controllers: [SavesController],
     }).compile();
 
-    controller = module.get<UserController>(UserController);
+    controller = module.get<SavesController>(SavesController);
   });
 
   afterAll(async () => {

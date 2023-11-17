@@ -5,4 +5,4 @@ import { AuthGuard } from '../user/auth/auth.guard';
 @Controller('storage')
 @ApiTags("Storage")
 @UseGuards(AuthGuard)
-export class StorageController {}
+export class SavesController {}
