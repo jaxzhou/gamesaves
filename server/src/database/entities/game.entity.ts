@@ -13,6 +13,14 @@ export class Game {
     unique: true,
   })
   name: string;
+  
+  @Property({
+    nullable: false,
+    type: 'varchar',
+    length: 40,
+    unique: true,
+  })
+  icon: string;
 
   @OneToMany(() => Save, (save) => save.game)
   saves = new Collection<Save>(this);

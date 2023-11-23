@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import * as crypto from 'crypto';
 import { UserService } from '../user.service';
@@ -14,6 +14,9 @@ export class AuthService {
 
   async validateUser(user: LoginUserDto): Promise<UserInfoDto> {
     const userEntiry = await this.userService.findByName(user.username);
+    if (!userEntiry) {
+      return null;
+    }
     const hashPassword = await this.hashPassword(user.password);
     if (userEntiry && userEntiry.password === hashPassword) {
       const { password, ...result } = userEntiry;
@@ -31,7 +34,7 @@ export class AuthService {
   async login(user: LoginUserDto) {
     const payload = await this.validateUser(user);
     if (!payload) {
-      throw new Error("用户名或密码错误");
+      throw new UnauthorizedException("用户名或密码错误");
     }
     return {
       access_token: this.jwtService.sign(payload, {secret: process.env.JWT_SECRET}),

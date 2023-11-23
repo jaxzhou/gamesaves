@@ -6,6 +6,7 @@ import { MikroOrmModule } from '@mikro-orm/nestjs';
 import { Game } from '../database/entities/game.entity';
 import { Save } from '../database/entities/save.entity';
 import { GameService } from './game/game.service';
+import { UserModule } from '../user/user.module';
 
 @Module({
   imports: [
@@ -14,6 +15,7 @@ import { GameService } from './game/game.service';
       Game,
       Save,
     ]),
+    UserModule,
   ],
   providers: [MinioService, GameService],
   controllers: [SavesController],

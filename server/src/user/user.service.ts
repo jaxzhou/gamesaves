@@ -16,7 +16,7 @@ export class UserService {
   async create(createUserDto: CreateUserDto) {
     //create user
     const createdUser = this.userRepo.create(createUserDto);
-    this.em.flush();
+    this.em.persistAndFlush(createdUser);
     return createdUser;
   }
 

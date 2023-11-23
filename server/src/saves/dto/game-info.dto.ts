@@ -1,23 +1,17 @@
 import { ApiProperty } from "@nestjs/swagger";
 import { IsString } from "class-validator";
 
-export class CreateSaveDto {
+export class GameInfoDto {
   @IsString()
   @ApiProperty({
     type: 'string',
     required: true,
   })
-  game: string;
-  
-  @IsString()
-  @ApiProperty({
-    type: 'string',
-    required: true,
-  })
-  filename: string;
+  name: string;
 
+  @IsString()
   @ApiProperty({
-    type: 'date',
+    type: 'string',
   })
-  update: Date;
+  icon: string;
 }
