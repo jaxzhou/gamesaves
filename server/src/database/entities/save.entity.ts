@@ -21,10 +21,10 @@ export class Save {
   })
   update: Date;
 
-  @ManyToOne(() => User, { ref: true })
-  user: Ref<User>;
+  @ManyToOne(() => User)
+  user: User;
 
-  @ManyToOne(() => Game, { ref: true })
-  game: Ref<Game>;
+  @ManyToOne(() => Game)
+  game: Game;
 
 }

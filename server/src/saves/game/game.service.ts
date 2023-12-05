@@ -29,8 +29,8 @@ export class GameService {
     const { game, ...meta } = save;
     const gameEntity = await this.findByName(game);
     const createdSave = this.saveRepo.create(meta);
-    createdSave.game.set(gameEntity);
-    createdSave.user.set(user);
+    createdSave.game = gameEntity;
+    createdSave.user = user;
     await this.saveRepo.getEntityManager().persistAndFlush(createdSave);
     return createdSave;
   }
@@ -42,8 +42,8 @@ export class GameService {
         id: save.id,
         filename: save.filename,
         update: save.update,
-        game: save.game.getEntity(),
-        user: save.user.getEntity(),
+        game: save.game,
+        user: save.user,
       }
     });
     return {
